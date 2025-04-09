@@ -1,10 +1,5 @@
-// import 'dotenv/config';
-// import { get } from 'env-var';
-
-import * as dotenv from 'dotenv';
+import 'dotenv/config';
 import { get } from 'env-var';
-
-dotenv.config();
 
 export const envs = {
     PORT: get('PORT').required().asPortNumber(),
