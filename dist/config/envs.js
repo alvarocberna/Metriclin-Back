@@ -6,7 +6,7 @@ const env_var_1 = require("env-var");
 exports.envs = {
     PORT: (0, env_var_1.get)('PORT').required().asPortNumber(),
     PUBLIC_PATH: (0, env_var_1.get)('PUBLIC_PATH').default('public').asString(),
-    DB_USER: (0, env_var_1.get)('DB_USER').required().asString(),
+    // DB_USER: get('DB_USER').default('admin').asString(),
     DB_USER_PASSWORD: (0, env_var_1.get)('DB_USER_PASSWORD').required().asString(),
     DB_PROTOCOL: (0, env_var_1.get)('DB_PROTOCOL').required().asString(),
     DB_HOST: (0, env_var_1.get)('DB_HOST').required().asString(),

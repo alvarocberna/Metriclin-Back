@@ -24,3 +24,4 @@ function main() {
     server.start();
     console.log('Ejecutando app.ts');
 }
+console.log('Ejecutando app.ts');

@@ -17,7 +17,7 @@ class OracleDBService {
         this.cs = "tcps://adb.sa-santiago-1.oraclecloud.com:1522/" + envs_1.envs.DB_SERVICE_NAME;
         this.connection = () => __awaiter(this, void 0, void 0, function* () {
             return yield oracledb.getConnection({
-                user: envs_1.envs.DB_USER,
+                user: 'admin',
                 password: envs_1.envs.DB_USER_PASSWORD,
                 connectString: this.cs,
                 configDir: __dirname + `../../../wallet_db`,

@@ -30,6 +30,10 @@ class Server {
             this.app.use(express_1.default.urlencoded({ extended: true }));
             this.app.use(express_1.default.static(this.publicPath));
             this.app.use(this.routes);
+            // this.app.get('*', (req, res) => {
+            //     const indexPath = path.join(__dirname + `../../../${this.publicPath}/index.html`);
+            //     res.sendFile(indexPath);
+            // });
             this.app.listen(this.port, () => {
                 console.log(`Server running on port ${this.port}`);
             });
