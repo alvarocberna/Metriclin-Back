@@ -10,7 +10,7 @@ export class OracleDBService {
             user: envs.DB_USER,
             password: envs.DB_USER_PASSWORD,
             connectString: this.cs,
-            // configDir: __dirname + `../../../wallet_db`,
+            configDir: __dirname + `../../../wallet_db`,
             walletLocation: __dirname + `../../../wallet_db`,
             walletPassword: envs.DB_WALLET_PASSWORD,
         });
