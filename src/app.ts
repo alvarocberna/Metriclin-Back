@@ -1,5 +1,6 @@
 import { Server } from './presentation/server';
 import { AppRoutes } from './presentation/router';
+import { envs } from './config/envs';
 
 (() => {
     main();
@@ -8,9 +9,9 @@ import { AppRoutes } from './presentation/router';
 function main() {
     console.log('ejecutando app.ts')
     try {
-        const PORT = process.env.PORT || 3000;
         const server = new Server({
-            port: PORT,
+            port: envs.PORT,
+            public_path: envs.PUBLIC_PATH,
             routes: AppRoutes.routes
         });
         server.start();
