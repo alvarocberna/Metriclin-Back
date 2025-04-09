@@ -25,7 +25,7 @@ export class Server {
 
         this.app.use(cors());
         this.app.use(express.json());
-        // this.app.use( express.urlencoded({ extended: true }) );
+        this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.static(this.publicPath));
         this.app.use(this.routes)
         this.app.listen(this.port, () => {
