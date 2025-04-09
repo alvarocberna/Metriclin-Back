@@ -18,3 +18,5 @@ function main() {
     console.log('Ejecutando app.ts');
 
 }
+
+console.log('Ejecutando app.ts');
