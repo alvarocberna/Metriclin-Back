@@ -10,6 +10,9 @@ export class EvaluacionRoutes {
 
         router.get('/:rut', evaluacionController.getEvaByRut);
         router.get('/:rut/:nro', evaluacionController.getEvaByNroAndRut);
+        router.post('/:rut', evaluacionController.createEvaluacion);
+        router.put('/:rut/:nro', evaluacionController.updateEvaluacion);
+        router.delete('/:rut/:nro', evaluacionController.deleteEvaluacion);
 
         return router;
 

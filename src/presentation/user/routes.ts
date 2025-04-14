@@ -10,6 +10,9 @@ export class UserRoutes {
 
         router.get('/', userController.getUsers);
         router.get('/:rut', userController.getUserByRut);
+        router.post('/', userController.createUser);
+        router.put('/:rut', userController.updateUser);
+        router.delete('/:rut', userController.deleteUser);
 
         return router;
 

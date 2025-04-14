@@ -9,6 +9,9 @@ export class FichaRoutes {
         const fichaController = new FichaController();
 
         router.get('/:rut', fichaController.getFichaByRut);
+        router.post('/', fichaController.createFicha);
+        router.put('/:rut', fichaController.updateFicha);
+        router.delete('/:rut', fichaController.deleteFicha);
 
         return router;
 
