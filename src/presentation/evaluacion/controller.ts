@@ -296,5 +296,51 @@ export class EvaluacionController {
 
 
 
+    public deleteEvaluaciones = async (req: Request, res: Response) => {
+        //definir variables
+        const rut = req.params.rut;
+        let connection;
+
+        //generar conexion
+        try {
+            connection = await this.db.connection();
+        } catch (err) {
+            res.status(500).send('Error al conectar con la bbdd: ' + err);
+            return;
+        }
+
+        //validaciones
+        if (!rut || rut.trim() === '') {
+            res.status(400).json({ error: 'El rut no puede estar vacío' });
+            console.log('el rut no puede estar vacío');
+            return;
+        }
+        const rutdb = await connection.execute(`SELECT rut FROM EVALUACION WHERE rut = ${rut}`)
+        if (rutdb.rows.length === 0) {
+            console.log('el rut no existe, no se puede eliminar una evaluación asosiada a este rut')
+            res.json('el rut no existe, no se puede eliminar una evaluación asosiada a este rut')
+            return;
+        }
+
+        //eliminar datos
+        try {
+            await connection.execute(`DELETE FROM EVALUACION WHERE rut = '${rut}' `);
+            await connection.commit();
+            res.json(`evaluaciones eliminadas`);
+        } catch (error) {
+            console.error('error, evaluación no eliminada:' + error);
+            res.status(500).send('Error en la eliminación de evaluacion: ' + error);
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close();
+                    console.log('Conexión cerrada');
+                } catch (closeErr) {
+                    console.error('Error al cerrar la conexión:', closeErr);
+                }
+            }
+        }
+
+    };
 
 }

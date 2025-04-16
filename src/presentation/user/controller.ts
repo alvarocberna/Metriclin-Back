@@ -59,7 +59,7 @@ export class UserController {
 
     public createUser = async (req: Request, res: Response) => {
         //definir variables
-        const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, password,
+        const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, contraseña,
             correo, num_celular, cod_rol } = req.body;
         const cod_comuna: number = 1;
         let connection;
@@ -97,7 +97,7 @@ export class UserController {
                 '${ap_paterno}',
                 '${ap_materno}', 
                 TO_DATE('${fecha_nac}', 'DD_MM_YYYY'),
-                '${password}', 
+                '${contraseña}', 
                 '${correo}',
                 ${num_celular},
                 ${cod_rol},
@@ -124,7 +124,7 @@ export class UserController {
     public updateUser = async (req: Request, res: Response) => {
         //definir variables
         const rut = req.params.rut;
-        const { nombre, ap_paterno, ap_materno, fecha_nac, password,
+        const { nombre, ap_paterno, ap_materno, fecha_nac, contraseña,
             correo, num_celular } = req.body;
         let connection;
 
@@ -151,7 +151,7 @@ export class UserController {
                     ap_paterno = '${ap_paterno}',
                     ap_materno = '${ap_materno}', 
                     fecha_nac = TO_DATE('${fecha_nac}', 'DD_MM_YYYY'),
-                    contraseña = '${password}', 
+                    contraseña = '${contraseña}', 
                     correo = '${correo}',
                     num_celular = ${num_celular}
                 WHERE rut = ${rut}`);
@@ -196,7 +196,9 @@ export class UserController {
 
         //eliminar datos
         try {
-            await connection.execute(`DELETE FROM USUARIO WHERE rut = ${rut}`);
+            await connection.execute(`DELETE FROM EVALUACION WHERE rut = '${rut}' `);
+            await connection.execute(`DELETE FROM FICHA_CLINICA WHERE rut = '${rut}'`);
+            await connection.execute(`DELETE FROM USUARIO WHERE rut = '${rut}'`);
             await connection.commit();
             console.log('usuario eliminado');
             res.json('usuario eliminado');
