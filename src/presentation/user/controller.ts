@@ -11,8 +11,8 @@ export class UserController {
         let connection;
         try {
             connection = await this.db.connection();
-            const result = await connection.execute(`SELECT rut, nombre, ap_paterno, ap_materno, fecha_nac, correo, num_celular  
-                FROM USUARIO`);
+            const result = await connection.execute(`SELECT rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo,
+                 correo, num_celular, rut_evaluador FROM USUARIO`);
             res.json(result.rows);
         } catch (error) {
             console.error(error);
@@ -36,8 +36,8 @@ export class UserController {
         let connection;
         try {
             connection = await this.db.connection();
-            const result = await connection.execute(`SELECT rut, nombre, ap_paterno, ap_materno, fecha_nac, correo, num_celular  
-                FROM USUARIO WHERE rut = ${rut}`);
+            const result = await connection.execute(`SELECT rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo,
+                 correo, num_celular, rut_evaluador FROM USUARIO WHERE rut = ${rut}`);
             res.json(result.rows[0]);
         } catch (error) {
             console.error(error);
@@ -59,8 +59,8 @@ export class UserController {
 
     public createUser = async (req: Request, res: Response) => {
         //definir variables
-        const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, contraseña,
-            correo, num_celular, cod_rol } = req.body;
+        const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo, contraseña,
+            correo, num_celular, rut_evaluador, cod_rol } = req.body;
         const cod_comuna: number = 1;
         let connection;
 
@@ -97,9 +97,11 @@ export class UserController {
                 '${ap_paterno}',
                 '${ap_materno}', 
                 TO_DATE('${fecha_nac}', 'DD_MM_YYYY'),
+                '${sexo}',
                 '${contraseña}', 
                 '${correo}',
                 ${num_celular},
+                '${rut_evaluador}',
                 ${cod_rol},
                 ${cod_comuna})`);
             await connection.commit();
