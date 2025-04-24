@@ -16,12 +16,4 @@ export class OracleDBService {
         });
     }
 
-    // connection = async () => {
-    //     return await oracledb.getConnection({
-    //         user: "test7",
-    //         password: "test7",
-    //         connectionString: "127.0.0.1:1521/xe"
-    //     });
-    // }
-
 }
