@@ -9,10 +9,11 @@ export class UserController {
 
     public getUsers = async (req: Request, res: Response) => {
         let connection;
+        const rutev = req.params.rutev;
         try {
             connection = await this.db.connection();
             const result = await connection.execute(`SELECT rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo,
-                 correo, num_celular, rut_evaluador FROM USUARIO`);
+                 correo, num_celular, rut_evaluador FROM USUARIO WHERE rut_evaluador = '${rutev}'`);
             res.json(result.rows);
         } catch (error) {
             console.error(error);
@@ -33,6 +34,7 @@ export class UserController {
 
     public getUserByRut = async (req: Request, res: Response) => {
         const rut = req.params.rut;
+        const rutev = req.params.rutev;
         let connection;
         try {
             connection = await this.db.connection();
@@ -59,7 +61,7 @@ export class UserController {
 
     public createUser = async (req: Request, res: Response) => {
         //definir variables
-        const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo, contraseña,
+        const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo, password,
             correo, num_celular, rut_evaluador, cod_rol } = req.body;
         const cod_comuna: number = 1;
         let connection;
@@ -98,7 +100,7 @@ export class UserController {
                 '${ap_materno}', 
                 TO_DATE('${fecha_nac}', 'DD_MM_YYYY'),
                 '${sexo}',
-                '${contraseña}', 
+                '${password}', 
                 '${correo}',
                 ${num_celular},
                 '${rut_evaluador}',
@@ -126,7 +128,7 @@ export class UserController {
     public updateUser = async (req: Request, res: Response) => {
         //definir variables
         const rut = req.params.rut;
-        const { nombre, ap_paterno, ap_materno, fecha_nac, contraseña,
+        const { nombre, ap_paterno, ap_materno, fecha_nac, password,
             correo, num_celular } = req.body;
         let connection;
 
@@ -153,7 +155,7 @@ export class UserController {
                     ap_paterno = '${ap_paterno}',
                     ap_materno = '${ap_materno}', 
                     fecha_nac = TO_DATE('${fecha_nac}', 'DD_MM_YYYY'),
-                    contraseña = '${contraseña}', 
+                    pass = '${password}', 
                     correo = '${correo}',
                     num_celular = ${num_celular}
                 WHERE rut = ${rut}`);

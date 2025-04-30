@@ -12,7 +12,7 @@ export class FichaController {
         let connection;
         try {
             connection = await this.db.connection();
-            const result = await connection.execute(`SELECT descripcion_paciente, diagnostico, objetivo, tratamiento,
+            const result = await connection.execute(`SELECT rut, descripcion_paciente, diagnostico, objetivo, tratamiento,
                  fecha_ingreso, fecha_prox_sesion FROM FICHA_CLINICA WHERE rut = ${rut}`);
             res.json(result.rows[0]);
         } catch (error) {

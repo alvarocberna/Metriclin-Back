@@ -8,8 +8,8 @@ export class UserRoutes {
         const router = Router();
         const userController = new UserController();
 
-        router.get('/', userController.getUsers);
-        router.get('/:rut', userController.getUserByRut);
+        router.get('/:rutev', userController.getUsers);
+        router.get('/:rutev/:rut', userController.getUserByRut);
         router.post('/', userController.createUser);
         router.put('/:rut', userController.updateUser);
         router.delete('/:rut', userController.deleteUser);

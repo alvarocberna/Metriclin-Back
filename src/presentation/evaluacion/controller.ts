@@ -71,11 +71,11 @@ export class EvaluacionController {
     public createEvaluacion = async (req: Request, res: Response) => {
         //definir variables
         const rut = req.params.rut;
-        const { fecha_evaluacion, descripcion_eva, peso, talla,
+        const { fecha_evaluacion, descripcion, peso, talla,
             pli_bicipital, pli_tricipital, pli_subescapular, pli_cresta_iliaca,
             pli_espina_iliaca, pli_abdominal, pli_muslo, pli_pantorrilla,
             per_brazo, per_brazo_flex, per_cintura, per_cadera, per_muslo,
-            per_pantorrilla, diametro_humero, diametro_muñeca, diametro_femur,
+            per_pantorrilla, diametro_humero, diametro_muneca, diametro_femur,
             cod_imc, cod_grasa_corporal, cod_masa_muscular } = req.body;
         let nro_evaluacion: number = 0;
         let connection;
@@ -116,7 +116,7 @@ export class EvaluacionController {
                 '${rut}',
                 ${nro_evaluacion},
                 TO_DATE('${fecha_evaluacion}', 'DD_MM_YYYY'),
-                '${descripcion_eva}',
+                '${descripcion}',
                 ${peso},
                 ${talla},
                 ${pli_bicipital},
@@ -134,7 +134,7 @@ export class EvaluacionController {
                 ${per_muslo},
                 ${per_pantorrilla},
                 ${diametro_humero},
-                ${diametro_muñeca},
+                ${diametro_muneca},
                 ${diametro_femur},
                 ${cod_imc},
                 ${cod_grasa_corporal},
@@ -142,7 +142,9 @@ export class EvaluacionController {
             await connection.commit();
             res.json(`evaluación nro ${nro_evaluacion} creada`);
         } catch (error) {
-            console.error('error, evaluación no creada:' + error);
+            console.log('rut: ' + rut)
+            console.log('nro: ' + nro_evaluacion)
+            console.error(req.body);
             res.status(500).send('Error en la creacion de evaluacion: ' + error);
         } finally {
             if (connection) {
