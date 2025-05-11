@@ -9,6 +9,7 @@ export class FichaRoutes {
         const fichaController = new FichaController();
 
         router.get('/:rut', fichaController.getFichaByRut);
+        router.get('/:fechaInicio/:fechaFin', fichaController.getFichaProxControl);
         router.post('/', fichaController.createFicha);
         router.put('/:rut', fichaController.updateFicha);
         router.delete('/:rut', fichaController.deleteFicha);

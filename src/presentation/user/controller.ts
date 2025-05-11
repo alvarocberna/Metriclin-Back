@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { OracleDBService } from "../../infrastructure/oracledb";
+import bcrypt from 'bcryptjs';
 
 export class UserController {
 
@@ -64,6 +65,8 @@ export class UserController {
         const { rut, dv_rut, nombre, ap_paterno, ap_materno, fecha_nac, sexo, password,
             correo, num_celular, rut_evaluador, cod_rol } = req.body;
         const cod_comuna: number = 1;
+        const salt = await bcrypt.genSalt(10);
+        const passwordhash = await bcrypt.hash(password, salt);
         let connection;
 
         //generar conexion
@@ -100,7 +103,7 @@ export class UserController {
                 '${ap_materno}', 
                 TO_DATE('${fecha_nac}', 'DD_MM_YYYY'),
                 '${sexo}',
-                '${password}', 
+                '${passwordhash}', 
                 '${correo}',
                 ${num_celular},
                 '${rut_evaluador}',

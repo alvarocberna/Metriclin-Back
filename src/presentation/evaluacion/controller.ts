@@ -7,19 +7,126 @@ export class EvaluacionController {
 
     constructor() { }
 
-    public getEvaByRut = async (req: Request, res: Response) => {
+    public getEvaByRutAll = async (req: Request, res: Response) => {
         const rut = req.params.rut;
         let connection;
         try {
             connection = await this.db.connection();
-            const result = await connection.execute(`SELECT nro_evaluacion, fecha_evaluacion, descripcion_eva, peso, talla,
+            const result = await connection.execute(`SELECT nro_evaluacion, fecha_evaluacion, peso, talla,
                                                      pli_bicipital, pli_tricipital, pli_subescapular, pli_cresta_iliaca,
                                                      pli_espina_iliaca, pli_abdominal, pli_muslo, pli_pantorrilla,
                                                      per_brazo, per_brazo_flex, per_cintura, per_cadera, per_muslo,
                                                      per_pantorrilla, diametro_humero, diametro_muñeca, diametro_femur,
                                                      cod_imc, cod_grasa_corporal, cod_masa_muscular
-                                                    FROM EVALUACION WHERE rut = ${rut}`);
+                                                    FROM EVALUACION WHERE rut = ${rut} ORDER BY nro_evaluacion DESC`);
             res.json(result.rows);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error en la consulta');
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close();
+                    console.log('Conexión cerrada');
+                } catch (closeErr) {
+                    console.error('Error al cerrar la conexión:', closeErr);
+                }
+            }
+
+        }
+
+    }
+
+    public getEvaByRut = async (req: Request, res: Response) => {
+        const rut = req.params.rut;
+        let connection;
+        try {
+            connection = await this.db.connection();
+            const result = await connection.execute(`SELECT nro_evaluacion, fecha_evaluacion, peso, talla,
+                                                     pli_bicipital, pli_tricipital, pli_subescapular, pli_cresta_iliaca,
+                                                     pli_espina_iliaca, pli_abdominal, pli_muslo, pli_pantorrilla,
+                                                     per_brazo, per_brazo_flex, per_cintura, per_cadera, per_muslo,
+                                                     per_pantorrilla, diametro_humero, diametro_muñeca, diametro_femur,
+                                                     cod_imc, cod_grasa_corporal, cod_masa_muscular
+                                                    FROM EVALUACION WHERE rut = ${rut} ORDER BY nro_evaluacion DESC`);
+            if (result.rows.length >= 3) {
+                const lastThree = [
+                    [result.rows[0][0], result.rows[1][0], result.rows[2][0]],
+                    [result.rows[0][1], result.rows[1][1], result.rows[2][1]],
+                    [result.rows[0][2], result.rows[1][2], result.rows[2][2]],
+                    [result.rows[0][3], result.rows[1][3], result.rows[2][3]],
+                    [result.rows[0][4], result.rows[1][4], result.rows[2][4]],
+                    [result.rows[0][5], result.rows[1][5], result.rows[2][5]],
+                    [result.rows[0][6], result.rows[1][6], result.rows[2][6]],
+                    [result.rows[0][7], result.rows[1][7], result.rows[2][7]],
+                    [result.rows[0][8], result.rows[1][8], result.rows[2][8]],
+                    [result.rows[0][9], result.rows[1][9], result.rows[2][9]],
+                    [result.rows[0][10], result.rows[1][10], result.rows[2][10]],
+                    [result.rows[0][12], result.rows[1][12], result.rows[2][12]],
+                    [result.rows[0][13], result.rows[1][13], result.rows[2][13]],
+                    [result.rows[0][13], result.rows[1][13], result.rows[2][13]],
+                    [result.rows[0][14], result.rows[1][14], result.rows[2][14]],
+                    [result.rows[0][15], result.rows[1][15], result.rows[2][15]],
+                    [result.rows[0][16], result.rows[1][16], result.rows[2][16]],
+                    [result.rows[0][17], result.rows[1][17], result.rows[2][17]],
+                    [result.rows[0][18], result.rows[1][18], result.rows[2][18]],
+                    [result.rows[0][19], result.rows[1][19], result.rows[2][19]],
+                    [result.rows[0][20], result.rows[1][20], result.rows[2][20]],
+                ]
+                res.json(lastThree);
+            } else if (result.rows.length === 2) {
+                const lastTwo = {
+                    nro_evaluacion: [result.rows[0][0], result.rows[1][0]],
+                    fecha_evaluacion: [result.rows[0][1], result.rows[1][1]],
+                    peso: [result.rows[0][2], result.rows[1][2]],
+                    talla: [result.rows[0][3], result.rows[1][3]],
+                    pli_bicipital: [result.rows[0][4], result.rows[1][4]],
+                    pli_tricipital: [result.rows[0][5], result.rows[1][5]],
+                    pli_subescapular: [result.rows[0][6], result.rows[1][6]],
+                    pli_cresta_iliaca: [result.rows[0][7], result.rows[1][7]],
+                    pli_espina_iliaca: [result.rows[0][8], result.rows[1][8]],
+                    pli_abdominal: [result.rows[0][9], result.rows[1][9]],
+                    pli_muslo: [result.rows[0][10], result.rows[1][10]],
+                    pli_pantorrilla: [result.rows[0][12], result.rows[1][12]],
+                    per_brazo: [result.rows[0][13], result.rows[1][13]],
+                    per_brazo_flex: [result.rows[0][13], result.rows[1][13]],
+                    per_cintura: [result.rows[0][14], result.rows[1][14]],
+                    per_cadera: [result.rows[0][15], result.rows[1][15]],
+                    per_muslo: [result.rows[0][16], result.rows[1][16]],
+                    per_pantorrilla: [result.rows[0][17], result.rows[1][17]],
+                    diametro_codo: [result.rows[0][18], result.rows[1][18]],
+                    diametro_muneca: [result.rows[0][19], result.rows[1][19]],
+                    diametro_rodilla: [result.rows[0][20], result.rows[1][20]],
+                }
+                res.json(lastTwo);
+            } else if (result.rows.length === 1) {
+                const lastOne = {
+                    nro_evaluacion: [result.rows[0][0]],
+                    fecha_evaluacion: [result.rows[0][1]],
+                    peso: [result.rows[0][2]],
+                    talla: [result.rows[0][3]],
+                    pli_bicipital: [result.rows[0][4]],
+                    pli_tricipital: [result.rows[0][5]],
+                    pli_subescapular: [result.rows[0][6]],
+                    pli_cresta_iliaca: [result.rows[0][7]],
+                    pli_espina_iliaca: [result.rows[0][8]],
+                    pli_abdominal: [result.rows[0][9]],
+                    pli_muslo: [result.rows[0][10]],
+                    pli_pantorrilla: [result.rows[0][12]],
+                    per_brazo: [result.rows[0][13]],
+                    per_brazo_flex: [result.rows[0][13]],
+                    per_cintura: [result.rows[0][14]],
+                    per_cadera: [result.rows[0][15]],
+                    per_muslo: [result.rows[0][16]],
+                    per_pantorrilla: [result.rows[0][17]],
+                    diametro_codo: [result.rows[0][18]],
+                    diametro_muneca: [result.rows[0][19]],
+                    diametro_rodilla: [result.rows[0][20]]
+                }
+                res.json(lastOne);
+            } else if (result.rows.length === 0) {
+                res.json('no hay evaluaciones para este rut');
+            }
         } catch (error) {
             console.error(error);
             res.status(500).send('Error en la consulta');

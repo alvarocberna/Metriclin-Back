@@ -31,11 +31,13 @@ export class AuthController {
             }
 
             const user = result.rows[0];
+
             let isValid = false;
-            if (password === user.PASS) {
-                isValid = true;
-            }
-            // const isValid = await bcrypt.compare(password, user.pass);
+
+            // if (password === user.PASS) {
+            //     isValid = true;
+            // }
+            isValid = await bcrypt.compare(password, user.PASS);
 
             if (!isValid) {
                 res.status(401).json({ message: 'Contraseña incorrecta' });

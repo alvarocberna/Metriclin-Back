@@ -30,6 +30,41 @@ export class FichaController {
         }
     }
 
+    public getFichaProxControl = async (req: Request, res: Response) => {
+
+        const fechaInicio = req.params.fechaInicio;
+        const fechaFin = req.params.fechaFin;
+        let connection;
+
+        try {
+            connection = await this.db.connection();
+            // const result = await connection.execute(`SELECT rut, fecha_prox_sesion FROM ficha_clinica
+            //     WHERE fecha_prox_sesion >= TO_DATE('${fechaInicio}', 'DD_MM_YYYY') AND fecha_prox_sesion <= TO_DATE('${fechaFin}', 'DD_MM_YYYY') `);
+            const result = await connection.execute(`
+                SELECT u.nombre, u.ap_paterno, u.ap_materno, f.rut, f.fecha_prox_sesion 
+                FROM usuario u JOIN ficha_clinica f 
+                ON (u.rut) = (f.rut) 
+                WHERE fecha_prox_sesion >= TO_DATE('${fechaInicio}', 'DD_MM_YYYY') AND fecha_prox_sesion <= TO_DATE('${fechaFin}', 'DD_MM_YYYY') `);
+            res.json(result.rows);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error en la consulta: ' + fechaInicio + ' - ' + fechaFin);
+        } finally {
+            if (connection) {
+                try {
+                    await connection.close();
+                    console.log('Conexión cerrada');
+                } catch (closeErr) {
+                    console.error('Error al cerrar la conexión:', closeErr);
+                }
+            }
+        }
+
+
+    }
+
+
+
     public createFicha = async (req: Request, res: Response) => {
         //definir variables
         const { rut, descripcion, diagnostico, objetivo, tratamiento, fecha_ingreso, fecha_prox_sesion } = req.body;
